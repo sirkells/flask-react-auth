@@ -1,6 +1,8 @@
 import pytest
 
-from project import app, db
+from project import create_app, db
+
+app = create_app()
 
 @pytest.fixture(scope='module')
 def test_app():
