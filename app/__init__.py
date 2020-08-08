@@ -22,7 +22,7 @@ def create_app(script_info=None):
     db.init_app(app)
 
     # register blueprints
-    from project.api.ping import ping_blueprint
+    from app.api.ping import ping_blueprint
     app.register_blueprint(ping_blueprint)
 
     # shell context for flask cli
@@ -30,4 +30,10 @@ def create_app(script_info=None):
     def ctx():
         return {'app': app, 'db': db}
 
+    # Take note of the shell_context_processor. 
+    # This is used to register the app and db to the shell. 
+    # Now we can work with the application context and the database 
+    # without having to import them directly into the shell, 
+    # run docker-compose exec users flask shell
+    # then type app and also db in the python console
     return app

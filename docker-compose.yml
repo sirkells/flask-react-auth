@@ -13,17 +13,16 @@ services:
     ports:
       - 5001:5000
     environment:
-      - FLASK_APP=project/__init__.py
       - FLASK_ENV=development
-      - APP_SETTINGS=project.config.DevelopmentConfig
+      - APP_SETTINGS=app.config.DevelopmentConfig
       - DATABASE_URL=postgresql://postgres:postgres@users-db:5432/users_dev 
       - DATABASE_TEST_URL=postgresql://postgres:postgres@users-db:5432/users_test
     depends_on: 
-        - users-db
+        - users-dbs
 
   users-db:
     build: 
-      context: ./project/db
+      context: ./app/db
       dockerfile: Dockerfile
     container_name: users-db
     expose: 
