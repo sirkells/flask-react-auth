@@ -46,6 +46,9 @@ ENV PYTHONUNBUFFERED 1
 ENV FLASK_ENV production
 ENV APP_SETTINGS app.config.ProductionConfig
 
+ARG SECRET_KEY
+ENV SECRET_KEY $SECRET_KEY
+
 # install psycopg2 dependencies
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev
