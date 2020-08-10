@@ -1,4 +1,5 @@
-import json, pytest
+import json
+import pytest
 
 # from app import db
 from app.api.models import User
