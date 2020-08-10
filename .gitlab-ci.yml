@@ -24,7 +24,7 @@ build:
         --build-arg SECRET_KEY=$SECRET_KEY
         "."
     - docker push $IMAGE:latest
-    
+
 test:
     stage: test
     image: $IMAGE:latest
@@ -44,7 +44,7 @@ test:
         - flake8 app
         #- black app
         - black app --check
-        - isort app/**/*.py 
+        #- isort app/**/*.py 
         - isort app/**/*.py --check-only
 
 deploy:
