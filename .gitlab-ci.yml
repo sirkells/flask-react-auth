@@ -37,6 +37,7 @@ test:
   script:
     - pytest "app/tests" -p no:warnings
     - flake8 app
+    - black app
     - black app --check
     - isort app/**/*.py --check-only
 
