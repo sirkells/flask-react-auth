@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask 
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -15,7 +15,7 @@ def create_app(script_info=None):
     app = Flask(__name__)
 
     # set config
-    app_settings = os.getenv('APP_SETTINGS')
+    app_settings = os.getenv("APP_SETTINGS")
     app.config.from_object(app_settings)
 
     # set up extensions
@@ -28,16 +28,15 @@ def create_app(script_info=None):
     app.register_blueprint(users_blueprint)
     app.register_blueprint(ping_blueprint)
 
-
     # shell context for flask cli
     @app.shell_context_processor
     def ctx():
-        return {'app': app, 'db': db}
+        return {"app": app, "db": db}
 
-    # Take note of the shell_context_processor. 
-    # This is used to register the app and db to the shell. 
-    # Now we can work with the application context and the database 
-    # without having to import them directly into the shell, 
+    # Take note of the shell_context_processor.
+    # This is used to register the app and db to the shell.
+    # Now we can work with the application context and the database
+    # without having to import them directly into the shell,
     # run docker-compose exec users flask shell
     # then type app and also db in the python console
     return app
