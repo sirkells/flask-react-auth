@@ -44,7 +44,7 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV FLASK_ENV production
-ENV APP_SETTINGS project.config.ProductionConfig
+ENV APP_SETTINGS app.config.ProductionConfig
 
 # install psycopg2 dependencies
 RUN apk update \
