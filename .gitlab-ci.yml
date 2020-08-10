@@ -41,7 +41,7 @@ test:
         - pip install black flake8 isort pytest
         - pytest "app/tests" -p no:warnings
         - flake8 app
-        - black app
+        #- black app
         - black app --check
         - isort app/**/*.py 
         - isort app/**/*.py --check-only
