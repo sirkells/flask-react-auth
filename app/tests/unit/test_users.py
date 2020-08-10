@@ -162,28 +162,37 @@ def test_update_user_invalid(
 
 
 # # normal run
-# $ docker-compose exec users python -m pytest "project/tests"
+# $ docker-compose exec users python -m pytest "app/tests"
+
+# test coverage
+# docker-compose exec users python -m pytest "app/tests" -p no:warnings --cov="app"
+
+# Run flake8, Black, and isort
+# $ docker-compose exec users flake8 app
+# $ docker-compose exec users black app
+# $ docker-compose exec users /bin/sh -c "isort app/**/*.py"
+
 
 # # disable warnings
-# $ docker-compose exec users python -m pytest "project/tests" -p no:warnings
+# $ docker-compose exec users python -m pytest "app/tests" -p no:warnings
 
 # # run only the last failed tests
-# $ docker-compose exec users python -m pytest "project/tests" --lf
+# $ docker-compose exec users python -m pytest "app/tests" --lf
 
 # # run only the tests with names that match the string expression
-# $ docker-compose exec users python -m pytest "project/tests" -k "config and not test_development_config"
+# $ docker-compose exec users python -m pytest "app/tests" -k "config and not test_development_config"
 
 # # stop the test session after the first failure
-# $ docker-compose exec users python -m pytest "project/tests" -x
+# $ docker-compose exec users python -m pytest "app/tests" -x
 
 # # enter PDB after first failure then end the test session
-# $ docker-compose exec users python -m pytest "project/tests" -x --pdb
+# $ docker-compose exec users python -m pytest "app/tests" -x --pdb
 
 # # stop the test run after two failures
-# $ docker-compose exec users python -m pytest "project/tests" --maxfail=2
+# $ docker-compose exec users python -m pytest "app/tests" --maxfail=2
 
 # # show local variables in tracebacks
-# $ docker-compose exec users python -m pytest "project/tests" -l
+# $ docker-compose exec users python -m pytest "app/tests" -l
 
 # # list the 2 slowest tests
-# $ docker-compose exec users python -m pytest "project/tests" --durations=2
+# $ docker-compose exec users python -m pytest "app/tests" --durations=2
