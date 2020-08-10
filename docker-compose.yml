@@ -18,7 +18,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@users-db:5432/users_dev 
       - DATABASE_TEST_URL=postgresql://postgres:postgres@users-db:5432/users_test
     depends_on: 
-        - users-dbs
+        - users-db
 
   users-db:
     build: 
