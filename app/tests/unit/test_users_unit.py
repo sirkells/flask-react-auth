@@ -221,6 +221,4 @@ def test_update_user_invalid(test_app, monkeypatch, user_id, payload, status_cod
     assert resp.status_code == status_code
     assert message in data["message"]
 
-
-
 # docker-compose exec users pytest "app/tests/test_users_unit.py" -p no:warnings -k "unit" -n 4

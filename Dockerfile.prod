@@ -26,8 +26,8 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 # lint
 COPY . /usr/src/app/
 RUN pip install black flake8 isort
-RUN flake8 app
 RUN black --exclude=migrations app
+RUN flake8 app
 RUN isort app/**/*.py
 
 #########
