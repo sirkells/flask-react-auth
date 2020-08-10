@@ -24,6 +24,7 @@ build:
         --build-arg SECRET_KEY=$SECRET_KEY
         "."
     - docker push $IMAGE:latest
+    
 test:
     stage: test
     image: $IMAGE:latest
