@@ -1,7 +1,7 @@
 from flask.cli import FlaskGroup
 
 from app import create_app, db
-from app.api.models import User
+from app.api.users.models import User
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
@@ -12,6 +12,8 @@ cli = FlaskGroup(create_app=create_app)
 # >> python manage.py seed_db
 # or
 # >> docker-compose exec users python manage.py seed_db
+
+
 @cli.command("recreate_db")
 def recreate_db():
     db.drop_all()

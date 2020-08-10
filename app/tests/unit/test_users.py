@@ -1,8 +1,9 @@
 import json
+
 import pytest
 
 # from app import db
-from app.api.models import User
+from app.api.users.models import User
 
 
 def test_add_user(test_app, test_database):
