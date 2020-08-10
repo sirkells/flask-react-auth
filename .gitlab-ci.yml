@@ -23,24 +23,27 @@ build:
         --file ./Dockerfile.prod
         "."
     - docker push $IMAGE:latest
-
 test:
-  stage: test
-  image: $IMAGE:latest
-  services:
-    - postgres:latest
-  variables:
-    POSTGRES_DB: users
-    POSTGRES_USER: runner
-    POSTGRES_PASSWORD: runner
-    DATABASE_TEST_URL: postgres://runner:runner@postgres:5432/users
-  script:
-    - pytest "app/tests" -p no:warnings
-    - flake8 app
-    - black app
-    - black app --check
-    - isort app/**/*.py 
-    - isort app/**/*.py --check-only
+    stage: test
+    image: $IMAGE:latest
+    services:
+        - postgres:latest
+    variables:
+        POSTGRES_DB: users
+        POSTGRES_USER: runner
+        POSTGRES_PASSWORD: runner
+        DATABASE_TEST_URL: postgres://runner:runner@postgres:5432/users
+    script:
+        - python3.8 -m venv env
+        - source env/bin/activate
+        - pip install -r requirements.txt
+        - pip install black flake8 isort pytest
+        - pytest "app/tests" -p no:warnings
+        - flake8 app
+        - black app
+        - isort app/**/*.py 
+        - black app --check
+        - isort app/**/*.py --check-only
 
 deploy:
     stage: deploy
