@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_restx import Api, Resource, fields
+from flask_restx import Api, Namespace, Resource, fields
 
 from app.api.users.crud import (
     add_user,
@@ -10,15 +10,10 @@ from app.api.users.crud import (
     update_user,
 )
 
-users_blueprint = Blueprint("users", __name__)
-api = Api(users_blueprint)
+users_namespace = Namespace("users")
 
 
-users_blueprint = Blueprint("users", __name__)
-api = Api(users_blueprint)
-
-
-user_model = api.model(
+user_model = users_namespace.model(
     "User",
     {
         "id": fields.Integer(readOnly=True),
@@ -30,8 +25,16 @@ user_model = api.model(
 
 
 class UsersList(Resource):
-    @api.expect(user_model, validate=True)  # new
+    @users_namespace.marshal_with(user_model, as_list=True)
+    def get(self):
+        """Returns all users."""
+        return get_all_users(), 200
+
+    @users_namespace.expect(user_model, validate=True)
+    @users_namespace.response(201, "<user_email> was added!")
+    @users_namespace.response(400, "Sorry. That email already exists.")
     def post(self):
+        """Creates a new user. """
         post_data = request.get_json()
         username = post_data.get("username")
         email = post_data.get("email")
@@ -45,25 +48,27 @@ class UsersList(Resource):
         response_object["message"] = f"{email} was added!"
         return response_object, 201
 
-    @api.marshal_with(user_model, as_list=True)
-    def get(self):
-        return get_all_users(), 200
-
 
 class Users(Resource):
-    @api.marshal_with(user_model)
+    @users_namespace.marshal_with(user_model)
+    @users_namespace.response(200, "Success")
+    @users_namespace.response(404, "User <user_id> does not exist")
     def get(self, user_id):
+        """Returns a single user."""
         user = get_user_by_id(user_id)
         if not user:
-            api.abort(404, f"User {user_id} does not exist")
+            users_namespace.abort(404, f"User {user_id} does not exist")
         return user, 200
         # the decorator marshal_with is equivalent to:
         # return api.marshal(user, user_model), 200
         # Marshalling provides an easy way to control what data
         # you actually render in your response or expect as in input payload.
 
-    @api.expect(user_model, validate=True)
+    @users_namespace.expect(user_model, validate=True)
+    @users_namespace.response(200, "<user_is> was updated!")
+    @users_namespace.response(404, "User <user_id> does not exist")
     def put(self, user_id):
+        """Updates a user."""
         post_data = request.get_json()
         username = post_data.get("username")
         email = post_data.get("email")
@@ -71,20 +76,23 @@ class Users(Resource):
 
         user = get_user_by_id(user_id)
         if not user:
-            api.abort(404, f"User {user_id} does not exist")
+            users_namespace.abort(404, f"User {user_id} does not exist")
         update_user(user, username, email)
         response_object["message"] = f"{user.id} was updated!"
         return response_object, 200
 
+    @users_namespace.response(200, "<user_is> was removed!")
+    @users_namespace.response(404, "User <user_id> does not exist")
     def delete(self, user_id):
+        """Deletes a user."""
         response_object = {}
         user = get_user_by_id(user_id)
         if not user:
-            api.abort(404, f"User {user_id} does not exist")
+            users_namespace.abort(404, f"User {user_id} does not exist")
         delete_user(user)
         response_object["message"] = f"{user.email} was removed!"
         return response_object, 200
 
 
-api.add_resource(UsersList, "/users")
-api.add_resource(Users, "/users/<int:user_id>")
+users_namespace.add_resource(UsersList, "")
+users_namespace.add_resource(Users, "/<int:user_id>")

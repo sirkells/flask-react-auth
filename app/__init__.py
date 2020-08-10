@@ -25,12 +25,10 @@ def create_app(script_info=None):
     if os.getenv("FLASK_ENV") == "development":
         admin.init_app(app)
 
-    # register blueprints
-    from app.api.ping import ping_blueprint
-    from app.api.users.views import users_blueprint
+    # register api
+    from app.api import api
 
-    app.register_blueprint(users_blueprint)
-    app.register_blueprint(ping_blueprint)
+    api.init_app(app)
 
     # shell context for flask cli
     @app.shell_context_processor
