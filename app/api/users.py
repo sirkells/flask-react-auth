@@ -57,6 +57,32 @@ class Users(Resource):
         # Marshalling provides an easy way to control what data
         # you actually render in your response or expect as in input payload.
 
+    @api.expect(user_model, validate=True)
+    def put(self, user_id):
+        post_data = request.get_json()
+        username = post_data.get("username")
+        email = post_data.get("email")
+        response_object = {}
+
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            api.abort(404, f"User {user_id} does not exist")
+        user.username = username
+        user.email = email
+        db.session.commit()
+        response_object["message"] = f"{user.id} was updated!"
+        return response_object, 200
+
+    def delete(self, user_id):
+        response_object = {}
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            api.abort(404, f"User {user_id} does not exist")
+        db.session.delete(user)
+        db.session.commit()
+        response_object["message"] = f"{user.email} was removed!"
+        return response_object, 200
+
 
 api.add_resource(UsersList, "/users")
 api.add_resource(Users, "/users/<int:user_id>")
