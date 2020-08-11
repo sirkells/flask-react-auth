@@ -1,8 +1,6 @@
 import json
 
 import pytest
-
-# from app import db
 from app.api.users.models import User
 
 

@@ -1,9 +1,8 @@
 import json
 from datetime import datetime
 
-import pytest
-
 import app.api.users.views
+import pytest
 
 # Add User Tests
 
@@ -248,4 +247,5 @@ def test_update_user_invalid(
     assert message in data["message"]
 
 
-# docker-compose exec users pytest "app/tests/test_users_unit.py" -p no:warnings -k "unit" -n 4
+# docker-compose exec users pytest "app/tests/test_users_unit.py"
+# -p no:warnings -k "unit" -n 4

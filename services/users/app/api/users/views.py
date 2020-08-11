@@ -1,6 +1,3 @@
-from flask import Blueprint, request
-from flask_restx import Api, Namespace, Resource, fields
-
 from app.api.users.crud import (
     add_user,
     delete_user,
@@ -9,6 +6,8 @@ from app.api.users.crud import (
     get_user_by_id,
     update_user,
 )
+from flask import request
+from flask_restx import Namespace, Resource, fields
 
 users_namespace = Namespace("users")
 
