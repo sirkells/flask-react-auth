@@ -11,7 +11,7 @@ services:
     volumes:
       - './services/users:/usr/src/app'
     ports:
-      - 5002:5000
+      - 5001:5000
     environment:
       - FLASK_ENV=development
       - APP_SETTINGS=app.config.DevelopmentConfig
@@ -30,3 +30,21 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  client:
+    build:
+      context: ./services/client
+      dockerfile: Dockerfile
+    container_name: client
+    volumes:
+      - './services/client:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - 3007:3000
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+    depends_on:
+      - users
+
+    stdin_open: true

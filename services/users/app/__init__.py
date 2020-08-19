@@ -1,14 +1,7 @@
 import os
 
 from flask import Flask
-from flask_admin import Admin
-from flask_sqlalchemy import SQLAlchemy
-
-# instantiate the db
-db = SQLAlchemy()
-
-# instantiate flask admin
-admin = Admin(template_mode="bootstrap3")
+from app.extensions import db, admin, cors
 
 
 def create_app(script_info=None):
@@ -21,7 +14,7 @@ def create_app(script_info=None):
 
     # set up extensions
     db.init_app(app)
-
+    cors.init_app(app, resources={r"*": {"origins": "*"}})
     if os.getenv("FLASK_ENV") == "development":
         admin.init_app(app)
 
