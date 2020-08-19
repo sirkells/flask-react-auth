@@ -51,7 +51,7 @@ ENV SECRET_KEY $SECRET_KEY
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev libffi6 libffi-dev
+    && apk add postgresql-dev gcc python3-dev musl-dev libffi-dev
 
 # install dependencies
 COPY --from=builder /usr/src/app/wheels /wheels
