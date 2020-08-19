@@ -15,7 +15,7 @@ def get_user_by_email(email):
 
 
 def add_user(username, email, password):
-    
+
     user = User(username=username, email=email, password=password)
     db.session.add(user)
     db.session.commit()

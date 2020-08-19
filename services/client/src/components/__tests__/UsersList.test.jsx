@@ -9,13 +9,13 @@ const users = [
   {
     email: "hermanmu@gmail.com",
     id: 1,
-    username: "michael"
+    username: "michael",
   },
   {
     email: "michael@mherman.org",
     id: 2,
-    username: "michaelherman"
-  }
+    username: "michaelherman",
+  },
 ];
 
 it("renders a username", () => {

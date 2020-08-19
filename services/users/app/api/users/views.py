@@ -22,9 +22,9 @@ user_model = users_namespace.model(
     },
 )
 
-user_post = users_namespace.inherit("User post", user_model, {
-    "password": fields.String(required=True)
-})
+user_post = users_namespace.inherit(
+    "User post", user_model, {"password": fields.String(required=True)}
+)
 
 
 class UsersList(Resource):
@@ -41,7 +41,7 @@ class UsersList(Resource):
         post_data = request.get_json()
         username = post_data.get("username")
         email = post_data.get("email")
-        password = post_data.get("password") 
+        password = post_data.get("password")
         response_object = {}
 
         user = get_user_by_email(email)

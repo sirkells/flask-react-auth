@@ -1,7 +1,7 @@
 import os
 
+from app.extensions import admin, cors, db
 from flask import Flask
-from app.extensions import db, admin, cors
 
 
 def create_app(script_info=None):

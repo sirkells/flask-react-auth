@@ -13,7 +13,7 @@ const props = {
   },
   addUser: () => {
     return true;
-  }
+  },
 };
 
 it("renders with default props", () => {

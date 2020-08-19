@@ -1,8 +1,8 @@
 import os
 
-from app import db
+from app.extensions import bcrypt, db
 from sqlalchemy.sql import func
-from app.extensions import db, bcrypt
+
 
 class User(db.Model):
 
@@ -19,7 +19,6 @@ class User(db.Model):
         self.username = username
         self.email = email
         self.password = bcrypt.generate_password_hash(password).decode()
-
 
 
 # ModelView allows the admin have access to your database models:

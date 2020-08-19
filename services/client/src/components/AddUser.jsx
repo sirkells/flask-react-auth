@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const AddUser = props => {
+const AddUser = (props) => {
   return (
-    <form onSubmit={event => props.addUser(event)}>
+    <form onSubmit={(event) => props.addUser(event)}>
       <div className="field">
         <label className="label is-large" htmlFor="input-username">
           Username
@@ -47,7 +47,7 @@ AddUser.propTypes = {
   username: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  addUser: PropTypes.func.isRequired
+  addUser: PropTypes.func.isRequired,
 };
 
 export default AddUser;
