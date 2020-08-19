@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import axios from "axios";
-import UsersList from "./components/UsersList";
-import AddUser from "./components/AddUser";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios';
+import UsersList from './components/UsersList';
+import AddUser from './components/AddUser';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       users: [],
-      username: "",
-      email: "",
+      username: '',
+      email: '',
     };
   }
 
@@ -21,16 +21,16 @@ class App extends Component {
   getUsers() {
     axios
       .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`)
-      .then((res) => {
+      .then(res => {
         this.getUsers();
-        this.setState({ username: "", email: "" });
+        this.setState({ username: '', email: '' });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }
 
-  addUser = (event) => {
+  addUser = event => {
     event.preventDefault();
 
     const data = {
@@ -40,15 +40,15 @@ class App extends Component {
 
     axios
       .post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
-      .then((res) => {
+      .then(res => {
         console.log(res);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
 
-  handleChange = (event) => {
+  handleChange = event => {
     const obj = {};
     obj[event.target.name] = event.target.value;
     this.setState(obj);
@@ -82,4 +82,4 @@ class App extends Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));
