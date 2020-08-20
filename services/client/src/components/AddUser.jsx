@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const AddUser = props => {
   return (
@@ -47,7 +47,7 @@ AddUser.propTypes = {
   username: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  addUser: PropTypes.func.isRequired,
+  addUser: PropTypes.func.isRequired
 };
 
 export default AddUser;

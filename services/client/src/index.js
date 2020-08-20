@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
-import UsersList from './components/UsersList';
-import AddUser from './components/AddUser';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import axios from "axios";
+import UsersList from "./components/UsersList";
+import AddUser from "./components/AddUser";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       users: [],
-      username: '',
-      email: '',
+      username: "",
+      email: ""
     };
   }
 
@@ -23,7 +23,7 @@ class App extends Component {
       .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`)
       .then(res => {
         this.getUsers();
-        this.setState({ username: '', email: '' });
+        this.setState({ username: "", email: "" });
       })
       .catch(err => {
         console.log(err);
@@ -35,7 +35,7 @@ class App extends Component {
 
     const data = {
       username: this.state.username,
-      email: this.state.email,
+      email: this.state.email
     };
 
     axios
@@ -82,4 +82,4 @@ class App extends Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

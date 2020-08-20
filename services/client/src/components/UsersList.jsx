@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const UsersList = props => {
   return (
@@ -16,7 +16,7 @@ const UsersList = props => {
 };
 
 UsersList.propTypes = {
-  users: PropTypes.array.isRequired,
+  users: PropTypes.array.isRequired
 };
 
 export default UsersList;
