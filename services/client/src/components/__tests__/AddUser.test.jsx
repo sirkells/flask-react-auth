@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 
@@ -17,7 +18,9 @@ const props = {
 };
 
 it('renders with default props', () => {
-  const { getByLabelText, getByText } = render(<AddUser {...props} />);
+  const { getByLabelText, getByText } = render(
+    <AddUser {...props} />,
+  );
 
   const usernameInput = getByLabelText('Username');
   expect(usernameInput).toHaveAttribute('type', 'text');

@@ -1,5 +1,12 @@
 {
-  "eslint.codeAction.showDocumentation": {
-    "enable": true
-  }
-}
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "eslint.validate": ["javascript"],
+    // Set the default
+    "editor.formatOnSave": false,
+    // Enable per-language
+    "[javascript]": {
+        "editor.formatOnSave": true
+    }
+   }
