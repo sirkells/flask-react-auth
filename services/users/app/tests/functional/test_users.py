@@ -9,17 +9,13 @@ def test_add_user(test_app, test_database):
     resp = client.post(
         "/users",
         data=json.dumps(
-            {
-                "username": "michael",
-                "email": "michael@testdriven.io",
-                "password": "tests",
-            }
+            {"username": "mike", "email": "mike@testdriven.io", "password": "tests",}
         ),
         content_type="application/json",
     )
     data = json.loads(resp.data.decode())
     assert resp.status_code == 201
-    assert "michael@testdriven.io was added!" in data["message"]
+    assert "mike@testdriven.io was added!" in data["message"]
 
 
 def test_add_user_invalid_json(test_app, test_database):
@@ -47,22 +43,14 @@ def test_add_user_duplicate_email(test_app, test_database):
     client.post(
         "/users",
         data=json.dumps(
-            {
-                "username": "michael",
-                "email": "michael@testdriven.io",
-                "password": "tests",
-            }
+            {"username": "mike", "email": "mike@testdriven.io", "password": "tests",}
         ),
         content_type="application/json",
     )
     resp = client.post(
         "/users",
         data=json.dumps(
-            {
-                "username": "michael",
-                "email": "michael@testdriven.io",
-                "password": "tests",
-            }
+            {"username": "mike", "email": "mike@testdriven.io", "password": "tests",}
         ),
         content_type="application/json",
     )
@@ -92,15 +80,15 @@ def test_single_user_incorrect_id(test_app, test_database):
 
 def test_all_users(test_app, test_database, add_user):
     test_database.session.query(User).delete()
-    add_user("michael", "michael@mherman.org", "tests")
+    add_user("mike", "mike@mherman.org", "tests")
     add_user("fletcher", "fletcher@notreal.com", "tests")
     client = test_app.test_client()
     resp = client.get("/users")
     data = json.loads(resp.data.decode())
     assert resp.status_code == 200
     assert len(data) == 2
-    assert "michael" in data[0]["username"]
-    assert "michael@mherman.org" in data[0]["email"]
+    assert "mike" in data[0]["username"]
+    assert "mike@mherman.org" in data[0]["email"]
     assert "fletcher" in data[1]["username"]
     assert "fletcher@notreal.com" in data[1]["email"]
     assert "password" not in data[0]

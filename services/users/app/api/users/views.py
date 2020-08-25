@@ -46,13 +46,13 @@ class UsersList(Resource):
         response_object = {}
 
         user = get_user_by_email(email)
-        username = username_is_taken(username)
+        # username = username_is_taken(username)
         if user:
             response_object["message"] = "Sorry. That email already exists."
             return response_object, 400
-        if username:
-            response_object["message"] = "Sorry. That username has been taken."
-            return response_object, 400
+        # if username:
+        #     response_object["message"] = "Sorry. That username has been taken."
+        #     return response_object, 400
         add_user(username, email, password)
         response_object["message"] = f"{email} was added!"
         return response_object, 201

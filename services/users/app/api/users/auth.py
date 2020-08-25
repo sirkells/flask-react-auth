@@ -10,7 +10,7 @@ auth_namespace = Namespace("auth")
 
 user_model = auth_namespace.model(
     "User",
-    {"username": fields.String(required=True), "email": fields.String(required=True),},
+    {"username": fields.String(required=True), "email": fields.String(required=True)},
 )
 
 # new
@@ -20,7 +20,7 @@ full_user = auth_namespace.clone(
 
 login = auth_namespace.model(
     "Login",
-    {"email": fields.String(required=True), "password": fields.String(required=True),},
+    {"email": fields.String(required=True), "password": fields.String(required=True)},
 )
 
 refresh = auth_namespace.model(
@@ -61,7 +61,7 @@ class Login(Resource):
     @auth_namespace.response(404, "User does not exist")
     def post(self):
         post_data = request.get_json()
-        username = post_data.get("username")
+        # username = post_data.get("username")
         email = post_data.get("email")
         password = post_data.get("password")
         response_object = {}
