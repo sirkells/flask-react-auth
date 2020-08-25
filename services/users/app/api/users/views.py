@@ -5,6 +5,7 @@ from app.api.users.crud import (
     get_user_by_email,
     get_user_by_id,
     update_user,
+    username_is_taken,
 )
 from flask import request
 from flask_restx import Namespace, Resource, fields
@@ -45,8 +46,12 @@ class UsersList(Resource):
         response_object = {}
 
         user = get_user_by_email(email)
+        username = username_is_taken(username)
         if user:
             response_object["message"] = "Sorry. That email already exists."
+            return response_object, 400
+        if username:
+            response_object["message"] = "Sorry. That username has been taken."
             return response_object, 400
         add_user(username, email, password)
         response_object["message"] = f"{email} was added!"

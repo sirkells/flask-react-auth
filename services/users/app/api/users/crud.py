@@ -22,6 +22,10 @@ def add_user(username, email, password):
     return user
 
 
+def username_is_taken(username):
+    return User.query.filter_by(username=username).first()
+
+
 def update_user(user, username, email):
     user.username = username
     user.email = email
