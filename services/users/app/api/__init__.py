@@ -1,5 +1,5 @@
+from app.api.auth import auth_namespace
 from app.api.ping import ping_namespace
-from app.api.users.auth import auth_namespace
 from app.api.users.views import users_namespace
 from flask_restx import Api
 
