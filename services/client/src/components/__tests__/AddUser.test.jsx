@@ -7,11 +7,6 @@ import AddUser from "../AddUser";
 afterEach(cleanup);
 
 const props = {
-  username: "",
-  email: "",
-  handleChange: () => {
-    return true;
-  },
   addUser: () => {
     return true;
   }

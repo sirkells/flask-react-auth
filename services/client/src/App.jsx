@@ -12,21 +12,29 @@ import RegisterForm from "./components/RegisterForm";
 class App extends Component {
   constructor() {
     super();
+    // updated
     this.state = {
       users: [],
-      username: "",
-      email: "",
       title: "TestDriven.io"
     };
+    this.addUser = this.addUser.bind(this);
   }
-
   componentDidMount() {
-    // this.getUsers();
+    this.getUsers();
   }
-
   getUsers() {
     axios
       .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`)
+      .then(res => {
+        this.setState({ users: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  addUser(data) {
+    axios
+      .post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
       .then(res => {
         this.getUsers();
         this.setState({ username: "", email: "" });
@@ -35,31 +43,6 @@ class App extends Component {
         console.log(err);
       });
   }
-
-  addUser = event => {
-    event.preventDefault();
-
-    const data = {
-      username: this.state.username,
-      email: this.state.email
-    };
-
-    axios
-      .post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  handleChange = event => {
-    const obj = {};
-    obj[event.target.name] = event.target.value;
-    this.setState(obj);
-  };
-
   render() {
     return (
       <div>
@@ -78,13 +61,8 @@ class App extends Component {
                         <h1 className="title is-1">Users</h1>
                         <hr />
                         <br />
-                        <AddUser
-                          username={this.state.username}
-                          email={this.state.email}
-                          addUser={this.addUser}
-                          // eslint-disable-next-line react/jsx-handler-names
-                          handleChange={this.handleChange}
-                        />
+                        {/* updated */}
+                        <AddUser addUser={this.addUser} />
                         <br />
                         <br />
                         <UsersList users={this.state.users} />
