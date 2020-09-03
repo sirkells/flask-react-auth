@@ -56,9 +56,9 @@ test:users:
     - cd /usr/src/app
     - pip install -r requirements-dev.txt
     - python -m pytest "app/tests" -p no:warnings
-    - python -m flake8 app
+    # - python -m flake8 app
     - python -m black app --check
-    - python -m isort app/**/*.py --check-only
+    # - python -m isort app/**/*.py --check-only
 
 test:client:
   stage: test
