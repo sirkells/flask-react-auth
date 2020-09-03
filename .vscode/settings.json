@@ -8,5 +8,6 @@
     // Enable per-language
     "[javascript]": {
         "editor.formatOnSave": true
-    }
+    },
+    "python.pythonPath": "/usr/bin/python3"
    }
