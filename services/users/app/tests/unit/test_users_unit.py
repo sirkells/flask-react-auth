@@ -40,7 +40,11 @@ def test_add_user(test_app, monkeypatch):
 
 def test_add_user_invalid_json(test_app):
     client = test_app.test_client()
-    resp = client.post("/users", data=json.dumps({}), content_type="application/json",)
+    resp = client.post(
+        "/users",
+        data=json.dumps({}),
+        content_type="application/json",
+    )
     data = json.loads(resp.data.decode())
     assert resp.status_code == 400
     assert "Input payload validation failed" in data["message"]
