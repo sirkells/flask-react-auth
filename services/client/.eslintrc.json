@@ -40,13 +40,8 @@
       "jsx": true
     }
   },
-  "extends": [
-    "prettier",
-    "prettier/react"
-  ],
-  "plugins": [
-    "prettier"
-  ],
+  "extends": ["prettier", "prettier/react"],
+  "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": "error"
   }

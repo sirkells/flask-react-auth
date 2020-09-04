@@ -21,8 +21,7 @@
     "prettier:check": "prettier --check 'src/**/*.{js,jsx,json}'",
     "prettier:write": "prettier --write 'src/**/*.{js,jsx,json}'",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "pre-commit": "lint-staged"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,17 +47,6 @@
     "eslint-config-standard-jsx": "^8.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
-    "lint-staged": "^10.3.0",
-    "pre-commit": "^1.2.2",
     "prettier": "^1.19.1"
-  },
-  "pre-commit": [
-    "pre-commit"
-  ],
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ]
   }
 }
