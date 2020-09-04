@@ -15,7 +15,7 @@ class App extends Component {
     // updated
     this.state = {
       users: [],
-      title: "TestDriven.io"
+      title: "TestDriven.io",
     };
     this.addUser = this.addUser.bind(this);
   }
@@ -25,21 +25,21 @@ class App extends Component {
   getUsers() {
     axios
       .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`)
-      .then(res => {
+      .then((res) => {
         this.setState({ users: res.data });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
   addUser(data) {
     axios
       .post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
-      .then(res => {
+      .then((res) => {
         this.getUsers();
         this.setState({ username: "", email: "" });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }

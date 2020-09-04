@@ -4,12 +4,12 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import "./form.css";
 
-const AddUser = props => (
+const AddUser = (props) => (
   <Formik
     initialValues={{
       username: "",
       email: "",
-      password: ""
+      password: "",
     }}
     onSubmit={(values, { setSubmitting, resetForm }) => {
       props.addUser(values);
@@ -26,10 +26,10 @@ const AddUser = props => (
         .min(6, "Email must be greater than 5 characters."),
       password: Yup.string()
         .required("Password is required.")
-        .min(11, "Password must be greater than 10 characters.")
+        .min(11, "Password must be greater than 10 characters."),
     })}
   >
-    {props => {
+    {(props) => {
       const {
         values,
         touched,
@@ -37,7 +37,7 @@ const AddUser = props => (
         isSubmitting,
         handleChange,
         handleBlur,
-        handleSubmit
+        handleSubmit,
       } = props;
       return (
         <form onSubmit={handleSubmit}>
@@ -114,7 +114,7 @@ const AddUser = props => (
 );
 
 AddUser.propTypes = {
-  addUser: PropTypes.func.isRequired
+  addUser: PropTypes.func.isRequired,
 };
 
 export default AddUser;
