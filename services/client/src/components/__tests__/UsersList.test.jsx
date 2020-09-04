@@ -20,7 +20,11 @@ const users = [
 
 it("renders a username", () => {
   const { getByText } = render(
-    <UsersList users={users} removeUser={() => true} />
+    <UsersList
+      users={users}
+      removeUser={() => true}
+      isAuthenticated={() => true}
+    />
   );
   expect(getByText("michael")).toHaveClass("username");
   expect(getByText("michaelherman")).toHaveClass("username");
@@ -28,7 +32,11 @@ it("renders a username", () => {
 
 it("renders", () => {
   const { asFragment } = render(
-    <UsersList users={users} removeUser={() => true} />
+    <UsersList
+      users={users}
+      removeUser={() => true}
+      isAuthenticated={() => true}
+    />
   );
   expect(asFragment()).toMatchSnapshot();
 });

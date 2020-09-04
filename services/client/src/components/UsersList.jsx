@@ -10,7 +10,7 @@ const UsersList = props => {
             <th>ID</th>
             <th>Email</th>
             <th>Username</th>
-            {props.isAuthenticated() && <th />}
+            {props.isAuthenticated && <th />}
           </tr>
         </thead>
         <tbody>
@@ -20,7 +20,7 @@ const UsersList = props => {
                 <td>{user.id}</td>
                 <td>{user.email}</td>
                 <td className="username">{user.username}</td>
-                {props.isAuthenticated() && (
+                {props.isAuthenticated && (
                   <td>
                     <button
                       className="button is-danger is-small"
