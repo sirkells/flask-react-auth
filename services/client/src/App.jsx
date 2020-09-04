@@ -75,7 +75,6 @@ class App extends Component {
                         <h1 className="title is-1">Users</h1>
                         <hr />
                         <br />
-                        {/* updated */}
                         <AddUser addUser={this.addUser} />
                         <br />
                         <br />
