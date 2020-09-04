@@ -5,7 +5,7 @@ import * as Yup from "yup";
 
 import "./form.css";
 
-const RegisterForm = (props) => {
+const RegisterForm = props => {
   return (
     <div>
       <h1 className="title is-1">Register</h1>
@@ -15,7 +15,7 @@ const RegisterForm = (props) => {
         initialValues={{
           username: "",
           email: "",
-          password: "",
+          password: ""
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           props.handleRegisterFormSubmit(values);
@@ -32,10 +32,10 @@ const RegisterForm = (props) => {
             .min(6, "Email must be greater than 5 characters."),
           password: Yup.string()
             .required("Password is required.")
-            .min(11, "Password must be greater than 10 characters."),
+            .min(11, "Password must be greater than 10 characters.")
         })}
       >
-        {(props) => {
+        {props => {
           const {
             values,
             touched,
@@ -43,7 +43,7 @@ const RegisterForm = (props) => {
             isSubmitting,
             handleChange,
             handleBlur,
-            handleSubmit,
+            handleSubmit
           } = props;
           return (
             <form onSubmit={handleSubmit}>
@@ -126,7 +126,7 @@ const RegisterForm = (props) => {
 };
 
 RegisterForm.propTypes = {
-  handleRegisterFormSubmit: PropTypes.func.isRequired,
+  handleRegisterFormSubmit: PropTypes.func.isRequired
 };
 
 export default RegisterForm;

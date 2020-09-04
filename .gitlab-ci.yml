@@ -68,15 +68,12 @@ test:client:
     - npm run prettier:check
     - npm run lint
     - npm run test
-
   # Here, we defined two stages, build and test, each having two jobs:
-
   #   build:users
   #   build:client
   #   test:users
   #   test:client
   #   In the build stages, we:
-
   #   Log in to the GitLab Container Registry
   #   Pull the previously pushed image (if it exists)
   #   Build and tag the new image

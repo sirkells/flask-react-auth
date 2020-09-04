@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const titleStyle = {
-  fontWeight: "bold",
+  fontWeight: "bold"
 };
 
-const NavBar = (props) => (
+const NavBar = props => (
   <nav
     className="navbar is-dark"
     role="navigation"
@@ -57,7 +57,7 @@ const NavBar = (props) => (
 );
 
 NavBar.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default NavBar;

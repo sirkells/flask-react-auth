@@ -5,7 +5,7 @@ import * as Yup from "yup";
 
 import "./form.css";
 
-const LoginForm = (props) => {
+const LoginForm = props => {
   return (
     <div>
       <h1 className="title is-1">Log In</h1>
@@ -14,7 +14,7 @@ const LoginForm = (props) => {
       <Formik
         initialValues={{
           email: "",
-          password: "",
+          password: ""
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           props.handleLoginFormSubmit(values);
@@ -25,10 +25,10 @@ const LoginForm = (props) => {
           email: Yup.string()
             .email("Enter a valid email.")
             .required("Email is required."),
-          password: Yup.string().required("Password is required."),
+          password: Yup.string().required("Password is required.")
         })}
       >
-        {(props) => {
+        {props => {
           const {
             values,
             touched,
@@ -36,7 +36,7 @@ const LoginForm = (props) => {
             isSubmitting,
             handleChange,
             handleBlur,
-            handleSubmit,
+            handleSubmit
           } = props;
           return (
             <form onSubmit={handleSubmit}>
@@ -97,7 +97,7 @@ const LoginForm = (props) => {
 };
 
 LoginForm.propTypes = {
-  handleLoginFormSubmit: PropTypes.func.isRequired,
+  handleLoginFormSubmit: PropTypes.func.isRequired
 };
 
 export default LoginForm;

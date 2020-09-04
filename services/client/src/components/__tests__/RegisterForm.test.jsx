@@ -8,7 +8,7 @@ afterEach(cleanup);
 const props = {
   handleRegisterFormSubmit: () => {
     return true;
-  },
+  }
 };
 
 it("renders properly", () => {

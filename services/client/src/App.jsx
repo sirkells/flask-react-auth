@@ -15,9 +15,10 @@ class App extends Component {
     // updated
     this.state = {
       users: [],
-      title: "TestDriven.io",
+      title: "TestDriven.io"
     };
     this.addUser = this.addUser.bind(this);
+    this.handleRegisterFormSubmit = this.handleRegisterFormSubmit.bind(this);
   }
   componentDidMount() {
     this.getUsers();
@@ -25,24 +26,37 @@ class App extends Component {
   getUsers() {
     axios
       .get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`)
-      .then((res) => {
+      .then(res => {
         this.setState({ users: res.data });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }
   addUser(data) {
     axios
       .post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
-      .then((res) => {
+      .then(res => {
         this.getUsers();
         this.setState({ username: "", email: "" });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }
+
+  handleRegisterFormSubmit(data) {
+    const url = `${process.env.REACT_APP_USERS_SERVICE_URL}/auth/register`;
+    axios
+      .post(url, data)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   render() {
     return (
       <div>
@@ -70,7 +84,16 @@ class App extends Component {
                     )}
                   />
                   <Route exact path="/about" component={About} />
-                  <Route exact path="/register" component={RegisterForm} />
+                  <Route
+                    exact
+                    path="/register"
+                    render={() => (
+                      <RegisterForm
+                        handleRegisterFormSubmit={this.handleRegisterFormSubmit}
+                      />
+                    )}
+                  />
+
                   <Route exact path="/login" component={LoginForm} />
                 </Switch>
               </div>

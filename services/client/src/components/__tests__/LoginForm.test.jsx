@@ -8,7 +8,7 @@ afterEach(cleanup);
 const props = {
   handleLoginFormSubmit: () => {
     return true;
-  },
+  }
 };
 
 it("renders properly", () => {
