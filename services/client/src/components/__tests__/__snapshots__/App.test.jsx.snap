@@ -19,7 +19,7 @@ exports[`renders 1`] = `
             href="/"
             style="font-weight: bold;"
           >
-            TestDriven.io
+            Schlau.com
           </a>
           <span
             class="nav-toggle navbar-burger"
@@ -63,12 +63,11 @@ exports[`renders 1`] = `
             >
               Log In
             </a>
-            <a
-              class="navbar-item"
-              href="/logout"
+            <span
+              class="navbar-item link"
             >
               Log Out
-            </a>
+            </span>
           </div>
         </div>
       </section>
