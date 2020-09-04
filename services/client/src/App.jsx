@@ -109,7 +109,8 @@ class App extends Component {
         <NavBar
           title={this.state.title}
           logoutUser={this.logoutUser}
-          isAuthenticated={this.isAuthenticated} />
+          isAuthenticated={this.isAuthenticated}
+        />
         <section className="section">
           <div className="container">
             <div className="columns">
@@ -152,11 +153,16 @@ class App extends Component {
                       />
                     )}
                   />
-                  <Route exact path='/status' render={() => (
-                    <UserStatus
-                      accessToken={this.state.accessToken}
-                      isAuthenticated={this.isAuthenticated} />
-                  )} />
+                  <Route
+                    exact
+                    path="/status"
+                    render={() => (
+                      <UserStatus
+                        accessToken={this.state.accessToken}
+                        isAuthenticated={this.isAuthenticated}
+                      />
+                    )}
+                  />
                 </Switch>
               </div>
             </div>
