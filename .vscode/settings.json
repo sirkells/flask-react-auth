@@ -1,0 +1,15 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "editor.formatOnSave": true
+  // "eslint.validate": ["javascript"],
+  // Set the default
+  // "editor.formatOnSave": false,
+  // // Enable per-language
+  // "[javascript]": {
+  //   "editor.formatOnSave": true
+  // },
+  // "python.pythonPath": "/usr/bin/python3",
+  // "eslint.workingDirectories": [ "./services/client"],
+}

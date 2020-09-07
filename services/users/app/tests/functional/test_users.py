@@ -8,17 +8,19 @@ def test_add_user(test_app, test_database):
     client = test_app.test_client()
     resp = client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {"username": "mike", "email": "mike@testdriven.io", "password": "tests"}
+        ),
         content_type="application/json",
     )
     data = json.loads(resp.data.decode())
     assert resp.status_code == 201
-    assert "michael@testdriven.io was added!" in data["message"]
+    assert "mike@testdriven.io was added!" in data["message"]
 
 
 def test_add_user_invalid_json(test_app, test_database):
     client = test_app.test_client()
-    resp = client.post("/users", data=json.dumps({}), content_type="application/json",)
+    resp = client.post("/users", data=json.dumps({}), content_type="application/json")
     data = json.loads(resp.data.decode())
     assert resp.status_code == 400
     assert "Input payload validation failed" in data["message"]
@@ -40,12 +42,16 @@ def test_add_user_duplicate_email(test_app, test_database):
     client = test_app.test_client()
     client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {"username": "mike", "email": "mike@testdriven.io", "password": "tests"}
+        ),
         content_type="application/json",
     )
     resp = client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {"username": "mike", "email": "mike@testdriven.io", "password": "tests"}
+        ),
         content_type="application/json",
     )
     data = json.loads(resp.data.decode())
@@ -54,13 +60,14 @@ def test_add_user_duplicate_email(test_app, test_database):
 
 
 def test_single_user(test_app, test_database, add_user):
-    user = add_user("jeffrey", "jeffrey@testdriven.io")
+    user = add_user("jeffrey", "jeffrey@testdriven.io", "tests")
     client = test_app.test_client()
     resp = client.get(f"/users/{user.id}")
     data = json.loads(resp.data.decode())
     assert resp.status_code == 200
     assert "jeffrey" in data["username"]
     assert "jeffrey@testdriven.io" in data["email"]
+    assert "password" not in data
 
 
 def test_single_user_incorrect_id(test_app, test_database):
@@ -73,22 +80,24 @@ def test_single_user_incorrect_id(test_app, test_database):
 
 def test_all_users(test_app, test_database, add_user):
     test_database.session.query(User).delete()
-    add_user("michael", "michael@mherman.org")
-    add_user("fletcher", "fletcher@notreal.com")
+    add_user("mike", "mike@mherman.org", "tests")
+    add_user("fletcher", "fletcher@notreal.com", "tests")
     client = test_app.test_client()
     resp = client.get("/users")
     data = json.loads(resp.data.decode())
     assert resp.status_code == 200
     assert len(data) == 2
-    assert "michael" in data[0]["username"]
-    assert "michael@mherman.org" in data[0]["email"]
+    assert "mike" in data[0]["username"]
+    assert "mike@mherman.org" in data[0]["email"]
     assert "fletcher" in data[1]["username"]
     assert "fletcher@notreal.com" in data[1]["email"]
+    assert "password" not in data[0]
+    assert "password" not in data[1]
 
 
 def test_remove_user(test_app, test_database, add_user):
     test_database.session.query(User).delete()
-    user = add_user("user-to-be-removed", "remove-me@testdriven.io")
+    user = add_user("user-to-be-removed", "remove-me@testdriven.io", "tests")
     client = test_app.test_client()
     resp_one = client.get("/users")
     data = json.loads(resp_one.data.decode())
@@ -113,7 +122,7 @@ def test_remove_user_incorrect_id(test_app, test_database):
 
 
 def test_update_user(test_app, test_database, add_user):
-    user = add_user("user-to-be-updated", "update-me@testdriven.io")
+    user = add_user("user-to-be-updated", "update-me@testdriven.io", "tests")
     client = test_app.test_client()
     resp_one = client.put(
         f"/users/{user.id}",
@@ -142,7 +151,7 @@ def test_update_user(test_app, test_database, add_user):
         [1, {"email": "me@testdriven.io"}, 400, "Input payload validation failed"],
         [
             999,
-            {"username": "me", "email": "me@testdriven.io"},
+            {"username": "me", "email": "me@testdriven.io", "password": "tests"},
             404,
             "User 999 does not exist",
         ],
@@ -153,7 +162,9 @@ def test_update_user_invalid(
 ):
     client = test_app.test_client()
     resp = client.put(
-        f"/users/{user_id}", data=json.dumps(payload), content_type="application/json",
+        f"/users/{user_id}",
+        data=json.dumps(payload),
+        content_type="application/json",
     )
     data = json.loads(resp.data.decode())
     assert resp.status_code == status_code

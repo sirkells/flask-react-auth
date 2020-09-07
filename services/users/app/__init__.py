@@ -1,7 +1,7 @@
 import os
 
+from app.extensions import admin, bcrypt, cors, db
 from flask import Flask
-from app.extensions import db, admin, cors
 
 
 def create_app(script_info=None):
@@ -15,6 +15,7 @@ def create_app(script_info=None):
     # set up extensions
     db.init_app(app)
     cors.init_app(app, resources={r"*": {"origins": "*"}})
+    bcrypt.init_app(app)
     if os.getenv("FLASK_ENV") == "development":
         admin.init_app(app)
 

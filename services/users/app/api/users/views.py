@@ -5,6 +5,7 @@ from app.api.users.crud import (
     get_user_by_email,
     get_user_by_id,
     update_user,
+    username_is_taken,
 )
 from flask import request
 from flask_restx import Namespace, Resource, fields
@@ -22,9 +23,9 @@ user_model = users_namespace.model(
     },
 )
 
-user_post = users_namespace.inherit("User post", user_model, {
-    "password": fields.String(required=True)
-})
+user_post = users_namespace.inherit(
+    "User post", user_model, {"password": fields.String(required=True)}
+)
 
 
 class UsersList(Resource):
@@ -41,13 +42,17 @@ class UsersList(Resource):
         post_data = request.get_json()
         username = post_data.get("username")
         email = post_data.get("email")
-        password = post_data.get("password") 
+        password = post_data.get("password")
         response_object = {}
 
         user = get_user_by_email(email)
+        # username = username_is_taken(username)
         if user:
             response_object["message"] = "Sorry. That email already exists."
             return response_object, 400
+        # if username:
+        #     response_object["message"] = "Sorry. That username has been taken."
+        #     return response_object, 400
         add_user(username, email, password)
         response_object["message"] = f"{email} was added!"
         return response_object, 201

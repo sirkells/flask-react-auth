@@ -1,15 +1,14 @@
-version: '3.7'
+version: "3.7"
 
 services:
-
   users:
     build:
       context: ./services/users
       dockerfile: Dockerfile
-    entrypoint: ['/usr/src/app/entrypoint.sh']
+    entrypoint: ["/usr/src/app/entrypoint.sh"]
     container_name: users
     volumes:
-      - './services/users:/usr/src/app'
+      - "./services/users:/usr/src/app"
     ports:
       - 5001:5000
     environment:
@@ -37,13 +36,13 @@ services:
       dockerfile: Dockerfile
     container_name: client
     volumes:
-      - './services/client:/usr/src/app'
-      - '/usr/src/app/node_modules'
+      - "./services/client:/usr/src/app"
+      - "/usr/src/app/node_modules"
     ports:
       - 3007:3000
     environment:
       - NODE_ENV=development
-      - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+      - REACT_APP_USERS_SERVICE_URL=http://localhost:5001
     depends_on:
       - users
 

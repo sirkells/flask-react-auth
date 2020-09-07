@@ -3,6 +3,8 @@ from datetime import datetime
 
 import app.api.users.views
 import pytest
+from app.api.users.crud import get_user_by_id
+from app.extensions import bcrypt
 
 # Add User Tests
 
@@ -11,7 +13,7 @@ def test_add_user(test_app, monkeypatch):
     def mock_get_user_by_email(email):
         return None
 
-    def mock_add_user(username, email):
+    def mock_add_user(username, email, password):
         return True
 
     monkeypatch.setattr(
@@ -22,7 +24,13 @@ def test_add_user(test_app, monkeypatch):
     client = test_app.test_client()
     resp = client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {
+                "username": "michael",
+                "email": "michael@testdriven.io",
+                "password": "tests",
+            }
+        ),
         content_type="application/json",
     )
     data = json.loads(resp.data.decode())
@@ -32,7 +40,11 @@ def test_add_user(test_app, monkeypatch):
 
 def test_add_user_invalid_json(test_app):
     client = test_app.test_client()
-    resp = client.post("/users", data=json.dumps({}), content_type="application/json",)
+    resp = client.post(
+        "/users",
+        data=json.dumps({}),
+        content_type="application/json",
+    )
     data = json.loads(resp.data.decode())
     assert resp.status_code == 400
     assert "Input payload validation failed" in data["message"]
@@ -54,7 +66,7 @@ def test_add_user_duplicate_email(test_app, monkeypatch):
     def mock_get_user_by_email(email):
         return True
 
-    def mock_add_user(username, email):
+    def mock_add_user(username, email, password):
         return True
 
     monkeypatch.setattr(
@@ -64,12 +76,24 @@ def test_add_user_duplicate_email(test_app, monkeypatch):
     client = test_app.test_client()
     client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {
+                "username": "michael",
+                "email": "michael@testdriven.io",
+                "password": "tests",
+            }
+        ),
         content_type="application/json",
     )
     resp = client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {
+                "username": "michael",
+                "email": "michael@testdriven.io",
+                "password": "tests",
+            }
+        ),
         content_type="application/json",
     )
     data = json.loads(resp.data.decode())
@@ -96,6 +120,7 @@ def test_single_user(test_app, monkeypatch):
     assert resp.status_code == 200
     assert "jeffrey" in data["username"]
     assert "jeffrey@testdriven.io" in data["email"]
+    assert "password" not in data
 
 
 def test_single_user_incorrect_id(test_app, monkeypatch):
@@ -137,6 +162,8 @@ def test_all_users(test_app, monkeypatch):
     assert "michael@mherman.org" in data[0]["email"]
     assert "fletcher" in data[1]["username"]
     assert "fletcher@notreal.com" in data[1]["email"]
+    assert "password" not in data[0]
+    assert "password" not in data[1]
 
 
 # Remove User Test
@@ -218,33 +245,55 @@ def test_update_user(test_app, monkeypatch):
     assert "me@testdriven.io" in data["email"]
 
 
-@pytest.mark.parametrize(
-    "user_id, payload, status_code, message",
-    [
-        [1, {}, 400, "Input payload validation failed"],
-        [1, {"email": "me@testdriven.io"}, 400, "Input payload validation failed"],
-        [
-            999,
-            {"username": "me", "email": "me@testdriven.io"},
-            404,
-            "User 999 does not exist",
-        ],
-    ],
-)
-def test_update_user_invalid(
-    test_app, monkeypatch, user_id, payload, status_code, message
-):
-    def mock_get_user_by_id(user_id):
-        return None
+def test_update_user_with_passord(test_app, test_database, add_user):
+    password_one = "greaterthaneight"
+    password_two = "somethingdifferent"
 
-    monkeypatch.setattr(app.api.users.views, "get_user_by_id", mock_get_user_by_id)
+    user = add_user("user-to-be-updated", "update-me@testdriven.io", password_one)
+    assert bcrypt.check_password_hash(user.password, password_one)
+
     client = test_app.test_client()
     resp = client.put(
-        f"/users/{user_id}", data=json.dumps(payload), content_type="application/json",
+        f"/users/{user.id}",
+        data=json.dumps(
+            {"username": "me", "email": "me@testdriven.io", "password": password_two}
+        ),
+        content_type="application/json",
     )
-    data = json.loads(resp.data.decode())
-    assert resp.status_code == status_code
-    assert message in data["message"]
+    assert resp.status_code == 200
+
+    user = get_user_by_id(user.id)
+    assert bcrypt.check_password_hash(user.password, password_one)
+    assert not bcrypt.check_password_hash(user.password, password_two)
+
+
+# @pytest.mark.parametrize(
+#     "user_id, payload, status_code, message",
+#     [
+#         [1, {}, 400, "Input payload validation failed"],
+#         [1, {"email": "me@testdriven.io"}, 400, "Input payload validation failed"],
+#         [
+#             999,
+#             {"username": "me", "email": "me@testdriven.io"},
+#             404,
+#             "User 999 does not exist",
+#         ],
+#     ],
+# )
+# def test_update_user_invalid(
+#     test_app, monkeypatch, user_id, payload, status_code, message
+# ):
+#     def mock_get_user_by_id(user_id):
+#         return None
+
+#     monkeypatch.setattr(app.api.users.views, "get_user_by_id", mock_get_user_by_id)
+#     client = test_app.test_client()
+#     resp = client.put(
+#         f"/users/{user_id}", data=json.dumps(payload), content_type="application/json",
+#     )
+#     data = json.loads(resp.data.decode())
+#     assert resp.status_code == status_code
+#     assert message in data["message"]
 
 
 # docker-compose exec users pytest "app/tests/test_users_unit.py"

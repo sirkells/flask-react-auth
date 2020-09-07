@@ -15,11 +15,15 @@ def get_user_by_email(email):
 
 
 def add_user(username, email, password):
-    
+
     user = User(username=username, email=email, password=password)
     db.session.add(user)
     db.session.commit()
     return user
+
+
+def username_is_taken(username):
+    return User.query.filter_by(username=username).first()
 
 
 def update_user(user, username, email):
