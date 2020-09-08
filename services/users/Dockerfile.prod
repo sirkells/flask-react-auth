@@ -1,14 +1,10 @@
-###########
-# BUILDER #
-###########
+# pull official base image
+FROM python:3.8.1-slim
 
-FROM python:3.8.1-alpine as builder
-
-# install dependencies
-RUN apk update && \
-    apk add --no-cache --virtual build-deps \
-    openssl-dev libffi-dev gcc python3-dev musl-dev \
-    postgresql-dev netcat-openbsd
+# install netcat
+RUN apt-get update && \
+    apt-get -y install netcat && \
+    apt-get clean
 
 # set working directory
 WORKDIR /usr/src/app
@@ -17,55 +13,12 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-
 # add and install requirements
-RUN pip install --upgrade pip
-COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
-
-# lint
-COPY . /usr/src/app/
-RUN pip install black flake8 isort
-RUN black --exclude=migrations app
-RUN flake8 app
-RUN isort app/**/*.py
-
-#########
-# FINAL #
-#########
-
-# pull official base image
-FROM python:3.8.1-alpine
-
-# set work directory
-WORKDIR /usr/src/app
-
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV FLASK_ENV production
-ENV APP_SETTINGS app.config.ProductionConfig
-
-ARG SECRET_KEY
-ENV SECRET_KEY $SECRET_KEY
-
-# install psycopg2 dependencies
-RUN apk update && \
-    apk add postgresql-dev gcc python3-dev musl-dev \
-    openssl-dev libffi-dev
-
-# install dependencies
-COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache /wheels/*
+COPY ./requirements.txt /usr/src/app/requirements.txt
+RUN pip install -r requirements.txt
 
 # add app
 COPY . /usr/src/app
 
-# add and run as non-root user
-RUN adduser -D myuser
-USER myuser
-
-# run gunicorn
-CMD gunicorn --bind 0.0.0.0:$PORT manage:app
+# run server
+CMD gunicorn -b 0.0.0.0:5000 manage:app
