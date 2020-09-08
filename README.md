@@ -1,3 +1,3 @@
 # Authentication with Flask, React, and Docker
 
-[![pipeline status](https://github.com/sirkells/flask-react-auth/badges/master/pipeline.svg)](https://github.com/sirkells/flask-react-auth/commits/master)
+[![pipeline status](https://gitlab.com/sirkells/flask-react/badges/master/pipeline.svg)](https://gitlab.com/sirkells/flask-react/commits/master)
